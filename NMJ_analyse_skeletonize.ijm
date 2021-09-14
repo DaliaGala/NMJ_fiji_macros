@@ -1,3 +1,16 @@
+/* Analyse skeletons of thresholded NMJ images
+ * 14 Sep 2021
+ * Dalia Sara Gala, dalia.gala@bioch.ox.ac.uk
+ * 
+ * Select folder containing images
+ * Select folder for output
+ * Opens file, runs median filter and auto-thresholds
+ * Dilates x4 and analyses particles excluding ones smaller than 2.00 units
+ * Runs skeletonize plugin and analyses skeletons
+ * Saves skeletons as .tiff
+ * Saves results as .csv
+ */
+
 // Define directories
 input = getDirectory("Choose Source Directory ");
 output = getDirectory("Choose Output Directory "); 
@@ -5,7 +18,7 @@ output = getDirectory("Choose Output Directory ");
 // Get the list of files
 list = getFileList(input);
 
-// Run loop to skeletonise for glial channel - C1
+// Run loop to skeletonise
 
 setBatchMode(true);
 
@@ -29,12 +42,10 @@ for (i=0; i<list.length; i++) {
 		saveAs("Tiff", output+fileName+"_skeleton.tif");
 		close("Tagged skeleton");
 		selectWindow("Results");
-		saveAs("Results", output + "Results_Skeleton" + fileName + "_glia" + ".csv");
+		saveAs("Results", output + "Results_Skeleton" + fileName + ".csv");
 		close("Results");
 	}
-
-
-
+	
 setBatchMode(false);
 close("*");
 run("Close All")
