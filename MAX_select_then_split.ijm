@@ -1,5 +1,21 @@
+/* Get MAX projection, select ROI, split channels, save
+ * 14 Sep 2017
+ * Dalia Sara Gala, dalia.gala@bioch.ox.ac.uk
+ * 
+ * Select folder containing images
+ * Select folder for ROI
+ * Select folder for channels
+ * Projects max of z series
+ * Subtracts background
+ * Asks user to circle around the synapse
+ * Duplicates, saves ROI
+ * Splits channels, saves channels
+ */
+
+ 
 // Define directories
 input = getDirectory("Choose Source Directory ");
+
 //output = getDirectory("Choose output Directory "); 
 outputROI = getDirectory("Choose Destination Directory for ROI ");
 outputCh = getDirectory("Choose Destination Directory for split channels ");
@@ -8,12 +24,9 @@ outputCh = getDirectory("Choose Destination Directory for split channels ");
 list = getFileList(input);
 
 // Produce MAX project, split channels
-
-// setBatchMode(true);
-
 for (i=0; i<list.length; i++) {
 	showProgress(i+1, list.length);
-	if (endsWith(list[i], ".oir")) {
+	if (endsWith(list[i], ".lsm")) {
 		path = input + list[i];
 		run("Bio-Formats Importer", "open=[" + path + "] autoscale color_mode=Composite rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_1");
 		fileName = substring(list[i],0,lengthOf(list[i])-4);
@@ -29,21 +42,12 @@ for (i=0; i<list.length; i++) {
 		run("Clear Outside");
 		run("Select None");
 		saveAs("Tiff", outputROI+"ROI_"+fileName+".tif");
-		//run("Median...", "radius=1.5");
-		//saveAs("Tiff", outputMEDIAN+"MEDIAN_"+fileName+".tif");
-		//close();
-		//run("Z Project...", "projection=[Average Intensity]");
-		//saveAs("Tiff", outputSUM+"AVG_"+fileName);
-		//close();
 		run("Split Channels");
-		saveAs("Tiff", outputCh+fileName+"_C3.tif");
-		close();
-//		saveAs("Tiff", outputCh+fileName+"_C2.tif");
+		saveAs("Tiff", outputCh+fileName+"_C2.tif");
 		close();
 		saveAs("Tiff", outputCh+fileName+"_C1.tif");
-		//saveAs("Tiff", output+fileName+".tif");
+		close();
 		run("Close All");
 	}
 }
-setBatchMode(false);
 close("*");
