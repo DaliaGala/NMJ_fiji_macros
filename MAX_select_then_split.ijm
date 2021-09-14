@@ -1,5 +1,5 @@
 /* Get MAX projection, select ROI, split channels, save
- * 14 Sep 2017
+ * 14 Sep 2021
  * Dalia Sara Gala, dalia.gala@bioch.ox.ac.uk
  * 
  * Select folder containing images
