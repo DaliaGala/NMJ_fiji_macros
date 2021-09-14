@@ -1,3 +1,17 @@
+/* Analyse areas of particles in thresholded NMJ images
+ * 14 Sep 2021
+ * Dalia Sara Gala, dalia.gala@bioch.ox.ac.uk
+ * 
+ * Select folder containing images
+ * Select folder for output
+ * Opens fileand thresholds
+ * Analyses particles excluding ones smaller than 2.00 units
+ * Saves particles as .tiff
+ * Saves results as .csv
+ */
+
+
+
 // Define directories
 input = getDirectory("Choose Source Directory ");
 output = getDirectory("Choose output Directory "); 
@@ -6,7 +20,6 @@ output = getDirectory("Choose output Directory ");
 list = getFileList(input);
 
 // Produce MAX project, split channels
-
 setBatchMode(true);
 
 for (i=0; i<list.length; i++) {
@@ -14,7 +27,6 @@ for (i=0; i<list.length; i++) {
 	path = input + list[i];
 	fileName = substring(list[i],0,lengthOf(list[i])-4);
 	open(path);
-	//run("Median...", "radius=1");
 	run("Auto Threshold", "method=Yen ignore_black ignore_white white");
 	run("Set Measurements...", "area mean min integrated limit display redirect=None decimal=3");
 	run("Analyze Particles...", "size=2.00-Infinity show=Outlines display include");
